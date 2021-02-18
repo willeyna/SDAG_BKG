@@ -4,7 +4,7 @@ from imports import *
 
 # number of trials per combination 
 # increases run time on the order of size^2 
-ntrials = 10
+ntrials = 300
 
 ############# SETUP
 
@@ -69,8 +69,11 @@ def TC_space(llh_func, bkg, bkg_t, bkg_c, size = 10, ntrials = 100):
 
 TC = TC_space(Method, bkg, bkg_t, bkg_c, ntrials = ntrials)
 
-plt.imshow(TC, origin = 'lower')
+plt.contourf(TC, levels = np.linspace(0,1,11))
+plt.colorbar()
+plt.plot(np.linspace(0,9,10000), (1/2.4)*np.linspace(0,9,10000))
+plt.title(Method + ' TC Space')
 plt.savefig("./outputs/" + Method + "_TC" + str(datetime.datetime.today())[6:10] + ".png")
 
 os.system(f"rm {Method}_VIZ.sb")
-#os.system(f"rm {Method}_comparison.out")
+os.system(f"rm {Method}_comparison.out")

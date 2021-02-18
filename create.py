@@ -25,7 +25,7 @@ def mkstr2(task,i,nper):
 ########## SBATCH Lines for Resource Request ##########
 
 #SBATCH --time=4:00:00             # limit of wall clock time - how long the job will run (same as -t)
-#SBATCH --mem=16G            # memory required per allocated CPU (or core) - amount of memory (in bytes)
+#SBATCH --mem=50G            # memory required per allocated CPU (or core) - amount of memory (in bytes)
 #SBATCH --job-name {tasknm}      # you can give your job a name for easier identification (same as -J)
 #SBATCH --output /mnt/research/IceCube/willey/SW_BKG/{tasknm}.out
 
@@ -84,7 +84,7 @@ if mode == "COMP":
     ########## SBATCH Lines for Resource Request ##########
 
     #SBATCH --time=4:00:00             # limit of wall clock time - how long the job will run (same as -t)
-    #SBATCH --mem=100G            # memory required per allocated CPU (or core) - amount of memory (in bytes)
+    #SBATCH --mem=500G            # memory required per allocated CPU (or core) - amount of memory (in bytes)
     #SBATCH --job-name {LLH}_comparison      # you can give your job a name for easier identification (same as -J)
     #SBATCH --output /mnt/research/IceCube/willey/SW_BKG/{LLH}_comparison.out
 
@@ -111,7 +111,7 @@ if mode == "TC":
     ########## SBATCH Lines for Resource Request ##########
 
     #SBATCH --time=4:00:00             # limit of wall clock time - how long the job will run (same as -t)
-    #SBATCH --mem=100G            # memory required per allocated CPU (or core) - amount of memory (in bytes)
+    #SBATCH --mem=500G            # memory required per allocated CPU (or core) - amount of memory (in bytes)
     #SBATCH --job-name {LLH}_comparison      # you can give your job a name for easier identification (same as -J)
     #SBATCH --output /mnt/research/IceCube/willey/SW_BKG/{LLH}_comparison.out
 
