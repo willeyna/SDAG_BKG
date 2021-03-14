@@ -5,8 +5,8 @@ import datetime
 
 LLH = input("Please enter the name of the LLH function you would like to use:\n")
 N = int(input("Number of background trials to run:\n"))
-B = input("Enter your background value ({n_track, n_casc]?):")
-nrun = input("How many jobs would you like to split this into?:")
+B = input("Enter your background value ({n_track, n_casc]?):\n")
+nrun = int(input("How many jobs would you like to split this into?:\n"))
 
 mode = input("If you would like to create a TC space for the method, enter 'TC':\nIf you would like to create a significance comparison to LLH, enter 'COMP':\n If you would like to do neither, press Enter.")
 if mode == "":
