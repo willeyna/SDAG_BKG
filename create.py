@@ -3,15 +3,14 @@ import numpy as np
 import sys
 import datetime
 
-LLH = str(sys.argv[1])
-N = int(sys.argv[2])
-B = str(sys.argv[3])
-nrun = int(sys.argv[4])
-try:
-    mode = str(sys.argv[5])
-except:
-    mode = None
+LLH = input("Please enter the name of the LLH function you would like to use:\n")
+N = int(input("Number of background trials to run:\n"))
+B = input("Enter your background value ({n_track, n_casc]?):")
+nrun = input("How many jobs would you like to split this into?:")
 
+mode = input("If you would like to create a TC space for the method, enter 'TC':\nIf you would like to create a significance comparison to LLH, enter 'COMP':\n If you would like to do neither, press Enter.")
+if mode == "":
+    mode = None
 
 
 nper= N//nrun

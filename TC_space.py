@@ -2,8 +2,8 @@ from imports import *
 
 ####### PARAMETERS
 
-# number of trials per combination 
-# increases run time on the order of size^2 
+# number of trials per combination
+# increases run time on the order of size^2
 ntrials = 300
 
 ############# SETUP
@@ -30,7 +30,7 @@ filtered_fils = []
 for fil in fils:
     dat = np.load(fil)
     try:
-        if dat["method"] == Method and dat["final"] == True:
+        if dat["method"] == Method and dat["final"] == True and dat["Bkg"] == B:
             filtered_fils.append(dat["bkg_TS"])
     except:
         pass;
@@ -40,20 +40,20 @@ bkg = np.sort(np.concatenate(filtered_fils).flatten(), axis = 0)
 #error if bkg is empty
 if len(bkg) == 0:
     print('ERROR: The background distribution is missing and/or not being properly read in')
-    
-    
-    
+
+
+
 
 def TC_space(llh_func, bkg, bkg_t, bkg_c, size = 10, ntrials = 100):
-    
+
     space = np.zeros([size,size])
-    
+
     #TC space signifigance comparison
     for ninj_t in range(size):
         for ninj_c in range(size):
             LLH_signal_TS = np.zeros(ntrials)
             for n in range(ntrials):
-                #event creator chunk 
+                #event creator chunk
                 evs = ev_maker(*[ninj_t, bkg_t ,ninj_c, bkg_c])
                 tracks = evs[:bkg_t+ninj_t, :]
                 cascades = evs[bkg_t+ninj_t:, :]

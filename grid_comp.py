@@ -33,10 +33,14 @@ llh_fils = []
 #filters to make sure each file to be repacked is from the right method and is finalized
 for fil in fils:
     dat = np.load(fil)
-    if dat["method"] == Method and dat["final"] == True:
+    # READS IN EVERY DATA FILE IN OUTPUTS TO FIND ONES USING THE NAMED METHOD AND BKG COUNT
+    if dat["method"] == Method and dat["final"] == True and dat['Bkg'] == B:
         filtered_fils.append(dat["bkg_TS"])
-    if dat["method"] == LLH_name and dat["final"] == True:
+    if dat["method"] == LLH_name and dat["final"] == True and dat['Bkg'] == B:
         llh_fils.append(dat["bkg_TS"])
+
+if len(llh_fils) == 0:
+    print("ERROR: Could not find appropriate base LLH file (Try checking background values)")
 
 TA_bkg_TS = np.sort(np.concatenate(filtered_fils).flatten(), axis = 0)
 LLH_bkg_TS = np.sort(np.concatenate(llh_fils).flatten(), axis = 0)
