@@ -30,19 +30,17 @@ filtered_fils = []
 for fil in fils:
     dat = np.load(fil)
     try:
-        if dat["method"] == Method and dat["final"] == True and dat["Bkg"] == B:
+        if dat["method"] == Method and dat["final"] == True and np.prod(dat["Bkg"] == B):
             filtered_fils.append(dat["bkg_TS"])
     except:
         pass;
 
-bkg = np.sort(np.concatenate(filtered_fils).flatten(), axis = 0)
-
 #error if bkg is empty
-if len(bkg) == 0:
+if len(filtered_fils) == 0:
     print('ERROR: The background distribution is missing and/or not being properly read in')
-
-
-
+else:
+    print("Files read in successfully")
+bkg = np.sort(np.concatenate(filtered_fils).flatten(), axis = 0)
 
 def TC_space(llh_func, bkg, bkg_t, bkg_c, size = 10, ntrials = 100):
 

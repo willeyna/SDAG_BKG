@@ -29,4 +29,4 @@ dt=(t2-t1).total_seconds()
 
 #saves the bkg sample
 #method allows the method to be checked in repacking and final tells repackager whether to repack it (if final is False) or not (True)
-np.savez(f'{Method}_bkg_{tag}', bkg_TS = bkg_TS, method = Method, date= str(datetime.datetime.today())[:10], dt=dt, final = False)
+np.savez(f'{Method}_bkg_{tag}', bkg_TS = bkg_TS, method = Method, Bkg = B, date= str(datetime.datetime.today())[:10], dt=dt, final = False)

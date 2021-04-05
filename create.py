@@ -48,7 +48,7 @@ conda activate base
         bigstr=f"""#!/bin/bash --login
 ########## SBATCH Lines for Resource Request ##########
     
-#SBATCH --time= 30:00:00             # limit of wall clock time - how long the job will run (same as -t)
+#SBATCH --time=80:00:00             # limit of wall clock time - how long the job will run (same as -t)
 #SBATCH --mem=100G            # memory required per allocated CPU (or core) - amount of memory (in bytes)
 #SBATCH --job-name {tasknm}      # you can give your job a name for easier identification (same as -J)
 #SBATCH --output /mnt/research/IceCube/willey/SW_BKG/{tasknm}.out

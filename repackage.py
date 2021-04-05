@@ -22,6 +22,7 @@ todo=len(fils)
 print(f"Files found: {todo}")
 outdat=np.load(fils[0])
 
+B = outdat['Bkg']
 
 #baby date string
 datestr = datetime.datetime.now()
@@ -56,9 +57,9 @@ outdat.sort(axis=0)
 print("packing data")
 
 #rename
-namestr="LLH_STACK_bkg_TS"
+namestr= Method + "_STACK_bkg_TS"
 
 
 filnam='./outputs/' + namestr+"_"+bb_datestr
-np.savez(filnam,bkg_TS = outdat, method = Method, final = True)
+np.savez(filnam,bkg_TS = outdat, method = Method, final = True, Bkg = B)
 print(f"file saved to {filnam}.npz")
