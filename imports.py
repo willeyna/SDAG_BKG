@@ -110,6 +110,21 @@ def p_value(x, bkg):
 def sigmoid(x, c = 3, a =.5):
     return 1 / (1 + np.exp(-c * (x - a)))
 
+#size := max number 
+size = 30
+CTR = 2
+
+TCT, TCC = np.zeros([size+1,size+1]),np.zeros([size+1,size+1])
+for i in range(1, size):
+    TCC[:,i] = poisson(i/CTR, np.linspace(0,size,size+1))
+    TCT[i,:] = poisson(i*CTR, np.linspace(0,size,size+1))
+TC = (TCT + TCC)
+for i in range(TC.shape[0]):
+    for j in range(TC.shape[0]):
+        TC[i,j] *= (j+i)
+TC[0,0] = 1e-20
+TC /= np.sum(TC)
+
 ####################################################################################
 
 # EVENT SAMPLING/ ENERGY FUNCTIONS
@@ -292,4 +307,57 @@ def TCP(tracks, cascades, in_ra = 45, in_dec = 60):
     TS0 = LLH_detector(np.concatenate([tracks,cascades]), in_ra = in_ra, in_dec = in_dec)[0]
     TS = TS0 * prior
     return TS, prior, [nst,nsc], TS0
+
+# runs LLH_detector 3 times per function run. Time should go as 3t?
+def TruePrior(tracks, cascades, in_ra = 45, in_dec = 60, TC=TC):
+
+    evs = np.concatenate([tracks,cascades])
+    nev = evs.shape[0]
+    ns = np.arange(0,tracks.shape[0])
+
+    # spatial bkg and signal terms 
+    B = 1/(4*np.pi)
+    S = evPSFd([evs[:,0],evs[:,1],evs[:,2]],[in_ra,in_dec])
+
+    # LLH calculations/maximizations 
+    nfit, sfit = np.meshgrid(ns, S)
+    evsky = np.log( (nfit/(nev))*sfit + (1 - nfit/(nev))*B )
+    injected = (np.argmax(np.sum(evsky,axis=0)))
+    maxllh = np.max(np.sum(evsky,axis=0)).astype('float128')
+
+    # null likelihood
+    L0 = nev*np.log(B).astype('float128')
+
+    # prior calculation
+    nst = LLH_detector0(tracks, in_ra, in_dec)[1]
+    nsc = LLH_detector0(cascades, in_ra, in_dec)[1]
+    prior = TC[nst,nsc].astype('float128')
+
+    offset = np.log(np.exp(maxllh) + np.exp(L0)*((1/prior) - 1))
+
+    return np.exp(maxllh - offset),
+
+def LLH_detector0(tracks, in_ra = 45, in_dec = 60):
+    ns = np.arange(0,tracks.shape[0])
+    ntrack = tracks.shape[0]
+
+    B = 1/(4*np.pi)
+
+    #gets the index for the specified point in the sky
+    targ_ind=hp.ang2pix(NSIDE,in_ra,in_dec,lonlat=True)
+    #retrieves the exact angle that the injected track is at
+    nin_ra,nin_dec=hp.pix2ang(NSIDE,targ_ind,lonlat=True)
+
+    S = evPSFd([tracks[:,0],tracks[:,1],tracks[:,2]],[nin_ra,nin_dec])
+
+    nfit, sfit = np.meshgrid(ns, S)
+
+    ltracksky = np.log( (nfit/(ntrack))*sfit + (1 - nfit/(ntrack))*B )
+    injected = (np.argmax(np.sum(ltracksky,axis=0)))
+    maxllh = np.max(np.sum(ltracksky,axis=0))
+
+
+    TS = 2*(maxllh - ntrack*np.log(B))
+
+    return maxllh, injected, TS, ltracksky
 

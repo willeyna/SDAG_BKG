@@ -2,8 +2,8 @@ from imports import *
 
 ####### PARAMETERS
 ntrials = 10000
-ninj_t = 2
-ninj_c = 4
+ninj_t = 3
+ninj_c = 5
 #name of classic likelihood function to use as a baseline for comparison
 LLH_name = "LLH_detector"
 
@@ -34,9 +34,9 @@ llh_fils = []
 for fil in fils:
     dat = np.load(fil)
     # READS IN EVERY DATA FILE IN OUTPUTS TO FIND ONES USING THE NAMED METHOD AND BKG COUNT
-    if dat["method"] == Method and dat["final"] == True and dat['Bkg'] == B:
+    if dat["method"] == Method and dat["final"] == True and (dat['Bkg'] == B).all():
         filtered_fils.append(dat["bkg_TS"])
-    if dat["method"] == LLH_name and dat["final"] == True and dat['Bkg'] == B:
+    if dat["method"] == LLH_name and dat["final"] == True and (dat['Bkg'] == B).all():
         llh_fils.append(dat["bkg_TS"])
 
 if len(llh_fils) == 0:
